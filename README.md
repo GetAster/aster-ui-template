@@ -23,6 +23,7 @@ mock engine at `/odata_mock.wasm`, and reloads on changes.
 ```sh
 bun run build      # static bundle in dist/
 bun run typecheck  # TypeScript, strict
+bun run lint       # aster-lint: Aster elements and theme tokens, not hand-made controls
 ```
 
 After `bun run build`, serve `dist/` with `/odata_mock.wasm` beside
@@ -58,6 +59,8 @@ line and column before the model runs.
   package entry points and stylesheet layout.
 - [Theming](https://ui.getaster.now/docs/guide/themes.html): the token contract
   behind `theme-lamplight.css` and `theme-harbour.css`.
+- [Check an application](https://ui.getaster.now/docs/guide/aster-lint.html):
+  what `bun run lint` checks and how to record an exception.
 - [The mock service](https://ui.getaster.now/docs/reference/mock.html): faults,
   storage and the WASM location and route contract.
 
@@ -82,12 +85,22 @@ and CORS, and the service must support the operations you enable.
 There is nothing to unwrap. Copy this directory into your application, remove
 `node_modules/`, `dist/` and any repository remote you do not want, rename the
 `package.json`, and keep the files you use. The template pins the 0.4 release
-line (`^0.4.0`, the first release of that line); `bun update @getaster/data
-@getaster/elements @getaster/mock` moves within it. Aster is pre-1.0, so read the release notes before a minor
-upgrade. Immediately after a release, npm's dependency cooldown may withhold
-registry installs of the new version for a few days; until it expires,
-install the tarball URL directly, e.g.
-`bun add https://registry.npmjs.org/@getaster/elements/-/elements-0.4.0.tgz`.
+line from 0.4.23 (`^0.4.23`, the first release with `aster-lint`); `bun update
+@getaster/data @getaster/elements @getaster/mock` moves within it. Aster is pre-1.0, so read
+the release notes before a minor upgrade.
+
+All four packages, `@getaster/data`, `@getaster/elements`,
+`@getaster/elements-preview` and `@getaster/mock`, are released together at one
+version and pin each other exactly; keep them at the same version. The template
+leaves out the experimental `@getaster/elements-preview`; add it at the same
+version when you need it.
+
+A dependency cooldown (in your package manager or a guard such as PMG) can hide
+a new release for several days: installs resolve the previous version and
+`npm view` does not list the new one. Exempt the `@getaster` packages from the
+cooldown while keeping malware checks, or install each package's tarball URL,
+`https://registry.npmjs.org/@getaster/<name>/-/<name>-<version>.tgz`, e.g.
+`bun add https://registry.npmjs.org/@getaster/elements-preview/-/elements-preview-0.4.0.tgz`.
 
 ## License
 
